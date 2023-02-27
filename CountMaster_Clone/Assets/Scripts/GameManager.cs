@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     {
         GameOverScreen.gameObject.SetActive(true);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.touchCount > 0)
             SceneManager.LoadScene(0); 
     }
 }

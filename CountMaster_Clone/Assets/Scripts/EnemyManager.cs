@@ -32,10 +32,9 @@ public class EnemyManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (GameManager.GameOver)
-            StopAllCoroutines();
-       else if(_spawnPlayer.playerCount != 0)
+       if(_spawnPlayer.playerCount != 0)
             DetectPlayers();
+
         else
         {
             StopAllCoroutines();
