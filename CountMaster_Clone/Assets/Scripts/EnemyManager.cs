@@ -1,20 +1,22 @@
 using System.Collections;
-using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static UnityEditor.Progress;
 
 public class EnemyManager : MonoBehaviour
 {
+    
+
     [SerializeField] private MoveHorizontal _moveHorizontal;
     [SerializeField] private MoveVertical _moveVertical;
     [SerializeField] private SpawnPlayer _spawnPlayer;
 
     [SerializeField] private Vector3 boxSize;
     [SerializeField] private Transform boxPoint;
+
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private int SpawnEnemyCount;
-
-    private GameObject[] EnemysToBeDeleted;
 
     private void OnDrawGizmos()
     {
@@ -26,46 +28,39 @@ public class EnemyManager : MonoBehaviour
     {
         _spawnPlayer.SpawnFonc(SpawnEnemyCount);
 
-        EnemysToBeDeleted = _spawnPlayer.SpawnedPlayer.ToArray();
     }
 
     private void FixedUpdate()
     {
-        DetectPlayers();
+        if (GameManager.GameOver)
+            StopAllCoroutines();
+       else if(_spawnPlayer.playerCount != 0)
+            DetectPlayers();
+        else
+        {
+            StopAllCoroutines();
+            _moveHorizontal.enabled = true;
+            _moveVertical.enabled = true;
+            _spawnPlayer.HumanCountText.text = "";
+        }
+        
     }
 
     private void DetectPlayers()
     {
         RaycastHit hit;
 
-        if (_spawnPlayer.SpawnedPlayer.Count == 0)
+        if (Physics.BoxCast(boxPoint.position, boxSize, Vector3.back, out hit, Quaternion.identity, 0.5f, playerLayer))
         {
-            _moveHorizontal.enabled = true;
-            _moveVertical.enabled = true;
-        }
-        else if (Physics.BoxCast(boxPoint.position, boxSize, Vector3.back, out hit, Quaternion.identity, 0.5f, playerLayer))
-        {
-            StartCoroutine(DestroyEnemys());
-            StartCoroutine(hit.transform.parent.GetComponent<PlayerManager>().DestroyPlayers(SpawnEnemyCount));
-        }
+            SpawnPlayer _playerSpawnScript = hit.transform.parent.GetComponent<SpawnPlayer>();
 
-        
-
-
-    }
-
-    IEnumerator DestroyEnemys()
-    {
-        if (_spawnPlayer.SpawnedPlayer.Count != 0)
-        {
-            _moveHorizontal.enabled = false;
-            _moveVertical.enabled = false;
-
-            for (int i = 0; i < EnemysToBeDeleted.Length; i++)
+            if (_spawnPlayer.playerCount != 0)
             {
-                _spawnPlayer.SpawnedPlayer.Remove(EnemysToBeDeleted[i]);
-                Destroy(EnemysToBeDeleted[i]);
-                yield return null;
+                _moveHorizontal.enabled = false;
+                _moveVertical.enabled = false;
+
+                StartCoroutine(HumanScript.DestroyHuman(_playerSpawnScript, _spawnPlayer.SpawnedPlayer.Count));
+                StartCoroutine(HumanScript.DestroyHuman(_spawnPlayer, _spawnPlayer.SpawnedPlayer.Count));
             }
         }
     }
