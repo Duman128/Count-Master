@@ -1,8 +1,4 @@
-using System.Collections;
-using UnityEditor.SearchService;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using static UnityEditor.Progress;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -38,9 +34,10 @@ public class EnemyManager : MonoBehaviour
         else
         {
             StopAllCoroutines();
+            GameManager.GameOver = false;
             _moveHorizontal.enabled = true;
             _moveVertical.enabled = true;
-            _spawnPlayer.HumanCountText.text = "";
+            Destroy(gameObject);
         }
         
     }

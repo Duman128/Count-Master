@@ -8,14 +8,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform GameOverScreen;
     [SerializeField] private SpawnPlayer PlayerSpawnScript;
 
-    public static bool GameOver = false;
+    [SerializeField] private MoveHorizontal _moveHorizontal;
+    [SerializeField] private MoveVertical _moveVertical;
 
-    public static GameManager Instance { get; private set; }
+    public static bool GameOver = false;
 
     private void Awake()
     {
         GameOver = false;
-        Instance = this;
         GameOverScreen.gameObject.SetActive(false);
     }
 
@@ -32,6 +32,9 @@ public class GameManager : MonoBehaviour
     public void GameOverFonc()
     {
         GameOverScreen.gameObject.SetActive(true);
+
+        _moveHorizontal.enabled = false;
+        _moveVertical.enabled = false;
 
         if (Input.GetKeyDown(KeyCode.Space) || Input.touchCount > 0)
             SceneManager.LoadScene(0); 

@@ -18,7 +18,7 @@ public class HumanScript : MonoBehaviour
                 if (_spawnPlayer.playerCount == 0)
                     GameManager.GameOver = true; 
 
-                else if(HumanGameObjects[i] != null)
+                else if(!GameManager.GameOver && HumanGameObjects[i] != null)
                 {
                     _spawnPlayer.SpawnedPlayer.Remove(HumanGameObjects[i]);
                     Destroy(HumanGameObjects[i].gameObject);

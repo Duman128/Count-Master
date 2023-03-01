@@ -392,6 +392,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameOverScreen: {fileID: 406080239}
   PlayerSpawnScript: {fileID: 2145961644}
+  _moveHorizontal: {fileID: 2145961643}
+  _moveVertical: {fileID: 1543362168}
 --- !u!4 &506615471
 Transform:
   m_ObjectHideFlags: 0
@@ -1237,7 +1239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7df0f84e2debf2348b7720ce4c66caa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.1
+  speed: 0.2
 --- !u!1 &1555634783
 GameObject:
   m_ObjectHideFlags: 0
@@ -1878,12 +1880,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cac900afdfa48b04cb6da5527c97b213, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.01
+  speed: 0.1
   handSpeed: 0.01
-  borderSize: {x: 0.5, y: 7.11, z: 30.02}
-  mask:
-    serializedVersion: 2
-    m_Bits: 64
+  XBorderValue: 6.4
 --- !u!114 &2145961644
 MonoBehaviour:
   m_ObjectHideFlags: 0
